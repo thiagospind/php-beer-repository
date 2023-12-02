@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Beer;
+use App\Models\BeerStyle;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,8 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\BeerStyle::factory(10)->create();
-        \App\Models\Beer::factory(10)->create();
+        $this->call(BeerStyleSeeder::class);
+        $this->call(BeerSeeder::class);
 
         // \App\Models\User::factory(10)->create();
 
