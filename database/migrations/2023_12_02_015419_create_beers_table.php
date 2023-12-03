@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedInteger('beer_styles_id');
             $table->foreign('beer_styles_id')->references('id')->on('beer_styles');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
