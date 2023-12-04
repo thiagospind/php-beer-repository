@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use test\Mockery\ReturnTypeUnionTypeHint;
+use Laravel\Sanctum\HasApiTokens;
 
 class Beer extends Model
 {
-    use HasFactory, softDeletes;
+    use HasApiTokens, HasFactory, softDeletes;
 
     protected $fillable = [
         'name',

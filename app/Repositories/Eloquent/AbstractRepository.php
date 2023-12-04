@@ -42,6 +42,10 @@ abstract class AbstractRepository
 
     public function delete($id)
     {
-        return $this->model->delete($id);
+        $beer = $this->model->find($id);
+        if (!$beer) {
+            return false;
+        }
+        return $beer->delete();
     }
 }

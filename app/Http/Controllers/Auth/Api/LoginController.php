@@ -12,19 +12,17 @@ class LoginController extends Controller
     public function login(LoginRequest $request): JsonResponse
     {
         try {
-//            $request->validated();
-            $credentials = $request->only('email', 'password');
 
+            $credentials = $request->only('email', 'password');
             if (!auth()->attempt($credentials)) {
                 return response()->json(['error' => 'Invalid Credentials'], 401);
             }
 
-            $token = auth()->user()->createToken('authToken')->plainTextToken;
-            $authUser = auth()->user();
-            dd($authUser);
+            $token = auth()->user()->createToken('authToken');
             return response()->json([
                 'data' => [
-                    'token' => $token
+                    'token' => $token->accessToken->name,
+                    'value' => $token->plainTextToken
                 ]
             ], 201);
         } catch (\Exception $error) {

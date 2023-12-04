@@ -18,17 +18,13 @@ use App\Http\Controllers\Auth\Api\BeerStyleController;
 |
 */
 
-//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-//    return $request->user();
-//});
-
-
 
 Route::prefix('auth')->group(function () {
-    Route::get('token', [LoginController::class,'token']);
     Route::post('login', [LoginController::class, 'login']);
     Route::post('register', [RegisterController::class, 'registerUser']);
+
     Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
-    Route::apiResource('/beer', BeerController::class);
-    Route::apiResource('/style', BeerStyleController::class);
+    Route::apiResource('/beer', BeerController::class)->middleware('auth:sanctum');
+    Route::apiResource('/style', BeerStyleController::class)->middleware('auth:sanctum');
 });
+
