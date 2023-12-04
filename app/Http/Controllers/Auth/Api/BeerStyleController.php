@@ -24,7 +24,7 @@ class BeerStyleController extends Controller
     {
         try {
             $beerStyleList = $this->beerStyleRepository->all();
-            return response()->json(['message' => 'Success', 'data' => $beerStyleList], HttpStatusCodes::HTTP_OK);
+            return response()->json(['data' => $beerStyleList], HttpStatusCodes::HTTP_OK);
         } catch (\Exception $error) {
             return response()->json(
                 ['error' => 'Error on get beer styles: '.$error->getMessage()],
@@ -41,7 +41,7 @@ class BeerStyleController extends Controller
         try {
             $data = $request->validated();
             $beerStyle = $this->beerStyleRepository->create($data);
-            return response()->json(['message' => 'Success','data' => $beerStyle], HttpStatusCodes::HTTP_OK);
+            return response()->json(['data' => $beerStyle], HttpStatusCodes::HTTP_OK);
         } catch (\Exception $error) {
             return response()->json(
                 ['error' => 'Error on create beer style:'.$error->getMessage()],
@@ -60,7 +60,7 @@ class BeerStyleController extends Controller
             if (!$beerStyle) {
                 return response()->json(['message' => 'Beer style not found'], HttpStatusCodes::HTTP_NOT_FOUND);
             }
-            return response()->json(['message' => 'Success','data' => $beerStyle], HttpStatusCodes::HTTP_OK);
+            return response()->json(['data' => $beerStyle], HttpStatusCodes::HTTP_OK);
         } catch (\Exception $error) {
             return response()->json(
                 ['error' => 'Error on list beer styles:'.$error->getMessage()],
@@ -112,7 +112,7 @@ class BeerStyleController extends Controller
             if (!$deletedBeerStyle) {
                 return response()->json(['message' => 'Beer style not found.'], HttpStatusCodes::HTTP_NOT_FOUND);
             }
-            return response()->json(['message' => 'Beer style deleted.'], HttpStatusCodes::HTTP_OK);
+            return response()->json(['message' => 'Beer style deleted.'], HttpStatusCodes::HTTP_NO_CONTENT);
         } catch (\Exception $error) {
             return response()->json(
                 ['error'  => 'Error on delete beer style:'.$error->getMessage()],
