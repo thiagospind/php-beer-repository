@@ -17,8 +17,8 @@ return new class extends Migration
             $table->float('abv');
             $table->string('color');
             $table->string('brewery');
-            $table->unsignedInteger('beer_styles_id');
-            $table->foreign('beer_styles_id')->references('id')->on('beer_styles');
+            $table->unsignedInteger('beer_style_id');
+            $table->foreign('beer_style_id')->references('id')->on('beer_styles');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -7,7 +7,7 @@ use App\Http\Requests\BeerStyleCreateRequest;
 use App\Http\Requests\BeerStyleUpdateRequest;
 use App\Repositories\Contracts\BeerStyleRepositoryInterface;
 use Illuminate\Http\JsonResponse;
-
+use Config\HttpStatusCodes;
 
 class BeerStyleController extends Controller
 {
@@ -24,9 +24,12 @@ class BeerStyleController extends Controller
     {
         try {
             $beerStyleList = $this->beerStyleRepository->all();
-            return response()->json(['data' => $beerStyleList], 200);
+            return response()->json(['message' => 'Success', 'data' => $beerStyleList], HttpStatusCodes::HTTP_OK);
         } catch (\Exception $error) {
-            return response()->json(['Error on list beer styles' => 'Error:'.$error], 500);
+            return response()->json(
+                ['error' => 'Error on get beer styles: '.$error->getMessage()],
+                HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -38,9 +41,12 @@ class BeerStyleController extends Controller
         try {
             $data = $request->validated();
             $beerStyle = $this->beerStyleRepository->create($data);
-            return response()->json($beerStyle, 201);
+            return response()->json(['message' => 'Success','data' => $beerStyle], HttpStatusCodes::HTTP_OK);
         } catch (\Exception $error) {
-            return response()->json(['Error on create beer style' => $error], 500);
+            return response()->json(
+                ['error' => 'Error on create beer style:'.$error->getMessage()],
+                HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -52,11 +58,14 @@ class BeerStyleController extends Controller
         try {
             $beerStyle = $this->beerStyleRepository->find($id);
             if (!$beerStyle) {
-                return response()->json(['message' => 'Beer style not found'], 404);
+                return response()->json(['message' => 'Beer style not found'], HttpStatusCodes::HTTP_NOT_FOUND);
             }
-            return response()->json(['data' => $beerStyle], 200);
+            return response()->json(['message' => 'Success','data' => $beerStyle], HttpStatusCodes::HTTP_OK);
         } catch (\Exception $error) {
-            return response()->json(['Error on list beer styles' => 'Error:'.$error], 500);
+            return response()->json(
+                ['error' => 'Error on list beer styles:'.$error->getMessage()],
+                HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 
@@ -69,27 +78,46 @@ class BeerStyleController extends Controller
             $data = $request->validated();
             $beerStyle = $this->beerStyleRepository->update($id, $data);
             if (!$beerStyle) {
-                return response()->json(['message' => 'Beer style not found to update.']);
+                return response()->json(
+                    ['message' => 'Beer style not found to update.'],
+                    HttpStatusCodes::HTTP_NOT_FOUND
+                );
             }
-            return response()->json(['message' => 'Beer style updated.']);
+            return response()->json(['message' => 'Beer style updated.'], HttpStatusCodes::HTTP_OK);
         } catch (\Exception $error) {
-            return response()->json(['Error on edit beer style' => 'Error:'.$error], 500);
+            return response()->json(
+                ['error' => 'Error on edit beer style:'.$error->getMessage()],
+                HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(string $id): JsonResponse
     {
         try {
-            $beerStyle = $this->beerStyleRepository->delete($id);
-            if (!$beerStyle) {
-                return response()->json(['message' => 'Beer style not deleted.']);
+            $beerStyle = $this->beerStyleRepository->find($id);
+            if ($beerStyle->beers()->count() > 0) {
+                return response()->json(
+                    [
+                        'message'
+                        => 'This beer style can´t be deleted. There are beers linked to this style.'
+                    ],
+                    HttpStatusCodes::HTTP_CONFLICT
+                );
             }
-            return response()->json(['message' => 'Beer style deleted.']);
+            $deletedBeerStyle  = $this->beerStyleRepository->delete($id);
+            if (!$deletedBeerStyle) {
+                return response()->json(['message' => 'Beer style not found.'], HttpStatusCodes::HTTP_NOT_FOUND);
+            }
+            return response()->json(['message' => 'Beer style deleted.'], HttpStatusCodes::HTTP_OK);
         } catch (\Exception $error) {
-            return response()->json(['Error on delete beer style:'  => 'Error:'.$error], 500);
+            return response()->json(
+                ['error'  => 'Error on delete beer style:'.$error->getMessage()],
+                HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 }

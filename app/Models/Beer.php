@@ -17,7 +17,7 @@ class Beer extends Model
         'abv',
         'color',
         'brewery',
-        'beer_styles_id'
+        'beer_style_id'
     ];
 
     public function style(): BelongsTo
