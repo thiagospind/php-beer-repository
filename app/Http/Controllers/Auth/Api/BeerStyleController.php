@@ -23,7 +23,7 @@ class BeerStyleController extends Controller
     public function index(): JsonResponse
     {
         try {
-            $beerStyleList = $this->beerStyleRepository->all();
+            $beerStyleList = $this->beerStyleRepository->paginate(10);
             return response()->json(['data' => $beerStyleList], HttpStatusCode::HTTP_OK);
         } catch (\Exception $error) {
             return response()->json(

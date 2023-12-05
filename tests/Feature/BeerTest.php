@@ -8,9 +8,7 @@ use Tests\TestCase;
 
 class BeerTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
+    /** @teste */
     public function testIndexRouteJsonReturnAuthenticated(): void
     {
         $this->withHeaders([
@@ -21,15 +19,18 @@ class BeerTest extends TestCase
         $response->assertStatus(200)
             ->assertJsonStructure([
                 'data' =>[
-                    '*' => [
-                        'id',
-                        'name',
-                        'abv',
-                        'color',
-                        'brewery',
-                        'beer_style_id',
-                        'created_at',
-                        'updated_at',
+                    'current_page',
+                    'data' => [
+                        '*' => [
+                            'id',
+                            'name',
+                            'abv',
+                            'color',
+                            'brewery',
+                            'beer_style_id',
+                            'created_at',
+                            'updated_at',
+                        ]
                     ]
                 ]
             ]);
@@ -57,22 +58,22 @@ class BeerTest extends TestCase
             ]);
     }
 
-    public function testShowRouteJsonReturnUnauthenticated(): void
-    {
-        $this->withHeaders([
-            'Accept' => 'application/json'
-        ]);
-        $response = $this->get('/api/auth/beer/1');
-        $response->assertStatus(401)
-            ->assertJson(['message' => 'Unauthenticated.']);
-    }
-
     public function testIndexRouteJsonReturnUnauthenticated(): void
     {
         $this->withHeaders([
             'Accept' => 'application/json'
         ]);
         $response = $this->get('/api/auth/beer');
+        $response->assertStatus(401)
+            ->assertJson(['message' => 'Unauthenticated.']);
+    }
+
+    public function testShowRouteJsonReturnUnauthenticated(): void
+    {
+        $this->withHeaders([
+            'Accept' => 'application/json'
+        ]);
+        $response = $this->get('/api/auth/beer/1');
         $response->assertStatus(401)
             ->assertJson(['message' => 'Unauthenticated.']);
     }

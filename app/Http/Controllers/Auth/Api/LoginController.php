@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Auth\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Http\StatusCodes\HttpStatusCode;
 use config\HttpCodeStatus;
 use Illuminate\Http\JsonResponse;
-use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -15,7 +15,7 @@ class LoginController extends Controller
         try {
             $credentials = $request->only('email', 'password');
             if (!auth()->attempt($credentials)) {
-                return response()->json(['error' => 'Invalid Credentials'], HttpCodeStatus::HTTP_UNAUTHORIZED);
+                return response()->json(['error' => 'Invalid Credentials'], HttpStatusCode::HTTP_UNAUTHORIZED);
             }
 
             $token = auth()->user()->createToken('authToken');
@@ -24,11 +24,11 @@ class LoginController extends Controller
                     'token' => $token->accessToken->name,
                     'value' => $token->plainTextToken
                 ]
-            ], 201);
+            ], HttpStatusCode::HTTP_CREATED);
         } catch (\Exception $error) {
             return response()->json(
-                ['Error to authenticate: ' => $error->getMessage()],
-                HttpCodeStatus::HTTP_INTERNAL_SERVER_ERROR
+                ['error' => 'Error to authenticate: '.$error->getMessage()],
+                HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -37,11 +37,11 @@ class LoginController extends Controller
     {
         try {
             auth()->user()->tokens()->delete();
-            return response()->json(['Message' => 'Success logout'], HttpCodeStatus::HTTP_NO_CONTENT);
+            return response()->json(['message' => 'Success logout'], HttpStatusCode::HTTP_NO_CONTENT);
         } catch (\Exception $error) {
             return response()->json(
                 ['Error message: ' => $error->getMessage()],
-                HttpCodeStatus::HTTP_INTERNAL_SERVER_ERROR
+                HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR
             );
         }
     }

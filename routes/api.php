@@ -1,11 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\Api\LoginController;
-use App\Http\Controllers\Auth\Api\RegisterController;
 use App\Http\Controllers\Auth\Api\BeerController;
 use App\Http\Controllers\Auth\Api\BeerStyleController;
+use App\Http\Controllers\Auth\Api\LoginController;
+use App\Http\Controllers\Auth\Api\RegisterController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------

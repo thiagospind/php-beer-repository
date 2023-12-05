@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRegisterRequest;
+use App\Http\StatusCodes\HttpStatusCode;
 use App\Models\User;
 use config\HttpCodeStatus;
 use Illuminate\Http\JsonResponse;
@@ -26,7 +27,7 @@ class RegisterController extends Controller
         } catch (\Exception $error) {
             return response()->json(
                 ['error' => 'Error to create user: '.$error->getMessage()],
-                HttpCodeStatus::HTTP_INTERNAL_SERVER_ERROR
+                HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR
             );
         }
     }

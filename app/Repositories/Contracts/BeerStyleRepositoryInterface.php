@@ -5,7 +5,7 @@ namespace App\Repositories\Contracts;
 interface BeerStyleRepositoryInterface
 {
     // List all beer styles
-    public function all();
+    public function paginate($itemsPaginate);
 
     // List a beer style
     public function find($id);

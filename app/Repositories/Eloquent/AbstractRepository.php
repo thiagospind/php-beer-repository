@@ -16,9 +16,9 @@ abstract class AbstractRepository
         return app($this->model);
     }
 
-    public function all()
+    public function paginate($itemsPaginate)
     {
-        return $this->model->all();
+        return $this->model->paginate($itemsPaginate);
     }
 
     public function find($id)
