@@ -1,8 +1,8 @@
 <?php
 
-namespace config;
+namespace App\Http\StatusCodes;
 
-class HttpStatusCodes
+class HttpStatusCode
 {
     const HTTP_CONTINUE = 100;
     const HTTP_SWITCHING_PROTOCOLS = 101;

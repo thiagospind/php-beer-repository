@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use config\HttpStatusCodes;
+use config\HttpCodeStatus;
 use Illuminate\Http\JsonResponse;
 use App\Models\User;
 
@@ -15,7 +15,7 @@ class LoginController extends Controller
         try {
             $credentials = $request->only('email', 'password');
             if (!auth()->attempt($credentials)) {
-                return response()->json(['error' => 'Invalid Credentials'], HttpStatusCodes::HTTP_UNAUTHORIZED);
+                return response()->json(['error' => 'Invalid Credentials'], HttpCodeStatus::HTTP_UNAUTHORIZED);
             }
 
             $token = auth()->user()->createToken('authToken');
@@ -28,7 +28,7 @@ class LoginController extends Controller
         } catch (\Exception $error) {
             return response()->json(
                 ['Error to authenticate: ' => $error->getMessage()],
-                HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR
+                HttpCodeStatus::HTTP_INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -37,11 +37,11 @@ class LoginController extends Controller
     {
         try {
             auth()->user()->tokens()->delete();
-            return response()->json(['Message' => 'Success logout'], HttpStatusCodes::HTTP_NO_CONTENT);
+            return response()->json(['Message' => 'Success logout'], HttpCodeStatus::HTTP_NO_CONTENT);
         } catch (\Exception $error) {
             return response()->json(
                 ['Error message: ' => $error->getMessage()],
-                HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR
+                HttpCodeStatus::HTTP_INTERNAL_SERVER_ERROR
             );
         }
     }

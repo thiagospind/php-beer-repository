@@ -26,7 +26,7 @@ class BeerCreateRequest extends FormRequest
             'abv' => 'required|decimal:1',
             'color' => 'required|string|max:255',
             'brewery' => 'string|max:255',
-            'beer_styles_id' => 'required|integer'
+            'beer_style_id' => 'required|integer'
         ];
     }
 }

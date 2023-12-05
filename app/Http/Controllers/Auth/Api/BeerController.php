@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Auth\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BeerCreateRequest;
 use App\Http\Requests\BeerUpdateRequest;
+use App\Http\StatusCodes\HttpStatusCode;
 use App\Repositories\Contracts\BeerRepositoryInterface;
-use config\HttpStatusCodes;
 use Illuminate\Http\JsonResponse;
 
 class BeerController extends Controller
@@ -29,7 +29,7 @@ class BeerController extends Controller
         } catch (\Exception $error) {
             return response()->json(
                 ['message'=>'Error on list beers:'.$error->getMessage()],
-                HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR
+                HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -42,11 +42,11 @@ class BeerController extends Controller
         try {
             $data = $request->validated();
             $beer = $this->beerRepository->create($data);
-            return response()->json(['data' => $beer], HttpStatusCodes::HTTP_CREATED);
+            return response()->json(['data' => $beer], HttpStatusCode::HTTP_CREATED);
         } catch (\Exception $error) {
             return response()->json(
                 ['error'=>'Error on create beer:'.$error->getMessage()],
-                HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR
+                HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -59,13 +59,13 @@ class BeerController extends Controller
         try {
             $beer = $this->beerRepository->find($id);
             if (!$beer) {
-                return response()->json(['message' => 'Beer not found'], HttpStatusCodes::HTTP_NOT_FOUND);
+                return response()->json(['message' => 'Beer not found'], HttpStatusCode::HTTP_NOT_FOUND);
             }
-            return response()->json(['data' => $beer], HttpStatusCodes::HTTP_OK);
+            return response()->json(['data' => $beer], HttpStatusCode::HTTP_OK);
         } catch (\Exception $error) {
             return response()->json(
                 ['error' => 'Error on list beers:'.$error->getMessage()],
-                HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR
+                HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -79,13 +79,13 @@ class BeerController extends Controller
             $data = $request->validated();
             $beer = $this->beerRepository->update($id, $data);
             if (!$beer) {
-                return response()->json(['message' => 'beer not found to update.'], HttpStatusCodes::HTTP_NOT_FOUND);
+                return response()->json(['message' => 'beer not found to update.'], HttpStatusCode::HTTP_NOT_FOUND);
             }
-            return response()->json(['message' => 'Beer updated.'], HttpStatusCodes::HTTP_OK);
+            return response()->json(['message' => 'Beer updated.'], HttpStatusCode::HTTP_OK);
         } catch (\Exception $error) {
             return response()->json(
                 ['error' => 'Error on edit beer:'.$error->getMessage()],
-                HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR
+                HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR
             );
         }
     }
@@ -98,13 +98,13 @@ class BeerController extends Controller
         try {
             $deleteBeer = $this->beerRepository->delete($id);
             if (!$deleteBeer) {
-                return response()->json(['message' => 'Beer not found.'], HttpStatusCodes::HTTP_NOT_FOUND);
+                return response()->json(['message' => 'Beer not found.'], HttpStatusCode::HTTP_NOT_FOUND);
             }
-            return response()->json(['message' => 'Beer deleted.'], HttpStatusCodes::HTTP_NO_CONTENT);
+            return response()->json(['message' => 'Beer deleted.'], HttpStatusCode::HTTP_NO_CONTENT);
         } catch (\Exception $error) {
             return response()->json(
                 ['error' => 'Error on delete beer: '.$error],
-                HttpStatusCodes::HTTP_INTERNAL_SERVER_ERROR
+                HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR
             );
         }
     }
