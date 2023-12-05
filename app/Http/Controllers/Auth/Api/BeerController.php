@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BeerCreateRequest;
 use App\Http\Requests\BeerUpdateRequest;
+use App\Http\Resources\BeerResource;
 use App\Http\StatusCodes\HttpStatusCode;
 use App\Repositories\Contracts\BeerRepositoryInterface;
 use Illuminate\Http\JsonResponse;
@@ -21,14 +22,14 @@ class BeerController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index(): JsonResponse
+    public function index()
     {
         try {
             $beerList = $this->beerRepository->all();
             return response()->json(['data' => $beerList], 200);
         } catch (\Exception $error) {
             return response()->json(
-                ['message'=>'Error on list beers:'.$error->getMessage()],
+                ['error'=>'Error on list beers:'.$error->getMessage()],
                 HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR
             );
         }
