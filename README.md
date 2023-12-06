@@ -13,6 +13,7 @@
 - O token é criado no login
 - A comunicação é feita pelo padrão json
 - Na função index dos controladores BeerController e BeerStyleController o metodo all() foi substituido pelo metodo paginate(10), afim de evitar sobrecarga no retorno dos dados e possíveis problemas hipotéticos no banco de dados.
+- Foi criada uma classe com constantes dos códigos de status http para uso nos retornos dos controllers.
 
 #### Rotas:
 
