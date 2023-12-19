@@ -22,6 +22,6 @@ class Beer extends Model
 
     public function style(): BelongsTo
     {
-        return $this->belongsTo(BeerStyle::class);
+        return $this->belongsTo(BeerStyle::class, 'beer_style_id');
     }
 }

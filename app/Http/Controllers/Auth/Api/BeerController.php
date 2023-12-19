@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BeerCreateRequest;
 use App\Http\Requests\BeerUpdateRequest;
+use App\Http\Resources\BeerResource;
 use App\Http\StatusCodes\HttpStatusCode;
 use App\Repositories\Contracts\BeerRepositoryInterface;
 use Illuminate\Http\JsonResponse;
@@ -21,11 +22,12 @@ class BeerController extends Controller
      * Display a listing of the resource.
      */
 
-    public function index(): JsonResponse
+    public function index()
     {
         try {
             $beerList = $this->beerRepository->paginate(10);
-            return response()->json(['data' => $beerList], HttpStatusCode::HTTP_OK);
+            return BeerResource::collection($beerList);
+            //return response()->json(['data' => $beerList], HttpStatusCode::HTTP_OK);
         } catch (\Exception $error) {
             return response()->json(
                 ['error'=>'Error on list beers:'.$error->getMessage()],
@@ -54,14 +56,15 @@ class BeerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id): JsonResponse
+    public function show(string $id)
     {
         try {
             $beer = $this->beerRepository->find($id);
             if (!$beer) {
                 return response()->json(['message' => 'Beer not found'], HttpStatusCode::HTTP_NOT_FOUND);
             }
-            return response()->json(['data' => $beer], HttpStatusCode::HTTP_OK);
+            return new BeerResource($beer);
+            //response()->json(['data' => $beer], HttpStatusCode::HTTP_OK);
         } catch (\Exception $error) {
             return response()->json(
                 ['error' => 'Error on list beers:'.$error->getMessage()],
